@@ -8,6 +8,8 @@
         constexpr long IN_ATTACK = (0x07420848);            // [Buttons] -> in_attack
         const long OFFSET_FLAGS	= 0x00c8;
         const long OFFSET_IN_FORWARD= 0x07420798;
+        const long OFFSET_IS_SKYDIVING=0x4620;  // m_skydiveState=0x4620
+        const long OFFSET_IS_ZIPLINE=0x2e30;
     // core
         
         // core !

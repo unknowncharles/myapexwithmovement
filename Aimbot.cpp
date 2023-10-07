@@ -34,6 +34,10 @@ public:
     }
     void update()
     {
+
+        if(m_localPlayer->isSkyDiving()){
+            printf("guy dey skydive");
+        }
         // validations
         if (m_configLoader->getAimbotTrigger() != 0x0000)
         { // our trigger is a button

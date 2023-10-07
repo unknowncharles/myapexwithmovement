@@ -74,6 +74,28 @@ public:
         short result = mem::ReadShort(ptrLong);
         return result > 0;
     }
+    bool isSkyDiving()
+    {
+        long basePointer = getBasePointer();
+        long ptrLong = basePointer + offsets::OFFSET_IS_SKYDIVING;
+        short result = mem::ReadShort(ptrLong);
+        return result > 0;
+    }
+    bool isOnGround()
+    {
+        long basePointer = getBasePointer();
+        long ptrLong = basePointer + offsets::OFFSET_FLAGS;
+        int result = mem::ReadInt(ptrLong);
+        return (result & 0x1) != 0;
+    }
+    bool isMovingForward()
+    {
+        long basePointer = getBasePointer();
+        long ptrLong = offsets::REGION + offsets::OFFSET_IN_FORWARD;
+        int result = mem::ReadInt(ptrLong);
+        return result > 0;
+    }
+
     bool isDead()
     {
         long basePointer = getBasePointer();

@@ -1,59 +1,36 @@
 #include "Utils.cpp"
 #include "Memory.cpp"
+#include "LocalPlayer.cpp"
 #include "ButtonController.cpp"
 
 class Movement
 {
 private:
     long ptrLongForward;
-    long ptrLongFlags;
-    long m_basePointer = 0;
-    bool didPrevMove;
-     ButtonController buttonController;
+    LocalPlayer *m_localPlayer;
+    ButtonController buttonController;
 
-    long getUnresolvedBasePointer()
-    {
-        long unresolvedBasePointer = offsets::REGION + offsets::LOCAL_PLAYER;
-        return unresolvedBasePointer;
-    }
-    long getBasePointer()
-    {
-        if (m_basePointer == 0)
-            m_basePointer = mem::ReadLong(getUnresolvedBasePointer());
-        return m_basePointer;
-    }
 
 public:
-    Movement()
+ Movement(LocalPlayer *localPlayer)
     {
-        long basePointer = getBasePointer();
         ptrLongForward = offsets::REGION + offsets::OFFSET_IN_FORWARD;
-        ptrLongFlags = offsets::REGION + offsets::OFFSET_FLAGS;
+        m_localPlayer = localPlayer;
     }
-
-    bool isMovingForward()
-    {
-        long basePointer = getBasePointer();
-        long ptrLong = offsets::REGION + offsets::OFFSET_IN_FORWARD;
-        int result = mem::ReadInt(ptrLong);
-        return result > 0;
-    }
-
-    bool isOnGround()
-    {
-        long basePointer = getBasePointer();
-        long ptrLong = basePointer + offsets::OFFSET_FLAGS;
-        int result = mem::ReadInt(ptrLong);
-        return (result & 0x1) != 0;
-    }
-
+   
     void update()
     {
         buttonController.forward.update(ptrLongForward);
-
-        if (!isOnGround())
+         
+        if (!m_localPlayer->isOnGround() && !m_localPlayer->isSkyDiving())
         {
-          buttonController.forward.force = true;
+             if(!m_localPlayer-> isMovingForward()){
+                buttonController.forward.force = true;
+        }
+        else{
+            buttonController.forward.force = true;
+        }
+        
                 
             if (!buttonController.forward.release)
             {
@@ -91,3 +68,12 @@ public:
 
     }
 };
+
+
+
+
+
+
+
+
+ 
